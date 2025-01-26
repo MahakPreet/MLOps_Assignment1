@@ -1,0 +1,40 @@
+name: ML CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Lint the code
+      - name: Lint with flake8
+        run: flake8 src/
+
+      # Step 5: Run unit tests
+      - name: Run Tests
+        run: pytest src/test_model.py
+
+      # Step 6: Deploy model (simulation)
+      - name: Simulate Deployment
+        run: |
+          echo "Deployment step: Model has been saved to src/model.pkl"
